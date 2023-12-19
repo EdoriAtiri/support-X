@@ -15,7 +15,7 @@ export default class extends BaseSchema {
       table.string("last_name", 255).notNullable();
       table.string("title", 255).notNullable();
       table.string("message").notNullable();
-      table.string("file");
+      table.string("file", 255);
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
