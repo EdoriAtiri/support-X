@@ -30,6 +30,8 @@ Route.post("/", async ({ request }: HttpContext) => {
   await user.fill({ fullName: fullName, email: email }).save();
 });
 
+Route.post("/support", "SupportRequestsController.store");
+
 Route.get("/", async () => {
   const user = await User.all();
   return { hello: user };

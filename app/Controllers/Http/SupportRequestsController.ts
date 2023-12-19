@@ -29,5 +29,7 @@ export default class SupportRequestsController {
       message: message,
       user_id: user.id || userEmail?.id,
     });
+
+    return supportRequest;
   }
 }
