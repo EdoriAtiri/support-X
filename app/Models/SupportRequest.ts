@@ -21,6 +21,9 @@ export default class SupportRequest extends BaseModel {
   public message: string;
 
   @column()
+  public user_id: number;
+
+  @column()
   public file: string;
 
   @column.dateTime({ autoCreate: true })

@@ -1,4 +1,5 @@
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
+import SupportRequest from "App/Models/SupportRequest";
 import User from "App/Models/User";
 
 export default class SupportRequestsController {
@@ -18,5 +19,15 @@ export default class SupportRequestsController {
         .fill({ fullName: `${first_name} ${last_name}`, email: email })
         .save();
     }
+
+    const supportRequest = new SupportRequest();
+    await supportRequest.fill({
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+      title: title,
+      message: message,
+      user_id: user.id || userEmail?.id,
+    });
   }
 }
