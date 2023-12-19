@@ -1,5 +1,6 @@
 import { DateTime } from "luxon";
 import { BaseModel, HasMany, column, hasMany } from "@ioc:Adonis/Lucid/Orm";
+import SupportRequest from "./SupportRequest";
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -11,8 +12,8 @@ export default class User extends BaseModel {
   @column()
   public email: string;
 
-  @hasMany(() => Support_request)
-  public support_requests: HasMany<typeof Support_request>;
+  @hasMany(() => SupportRequest)
+  public support_requests: HasMany<typeof SupportRequest>;
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime;
