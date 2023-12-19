@@ -21,14 +21,16 @@ export default class SupportRequestsController {
     }
 
     const supportRequest = new SupportRequest();
-    await supportRequest.fill({
-      first_name: first_name,
-      last_name: last_name,
-      email: email,
-      title: title,
-      message: message,
-      user_id: user.id || userEmail?.id,
-    });
+    await supportRequest
+      .fill({
+        first_name: first_name,
+        last_name: last_name,
+        email: email,
+        title: title,
+        message: message,
+        user_id: user.id || userEmail?.id,
+      })
+      .save();
 
     return supportRequest;
   }

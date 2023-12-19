@@ -18,21 +18,18 @@
 |
 */
 
-import { HttpContext } from "@adonisjs/core/build/standalone";
 import Route from "@ioc:Adonis/Core/Route";
+import SupportRequest from "App/Models/SupportRequest";
 import User from "App/Models/User";
-
-const user = new User();
-
-Route.post("/", async ({ request }: HttpContext) => {
-  const fullName = request.input("fullName");
-  const email = request.input("email");
-  await user.fill({ fullName: fullName, email: email }).save();
-});
 
 Route.post("/support", "SupportRequestsController.store");
 
 Route.get("/", async () => {
   const user = await User.all();
-  return { hello: user };
+  return user;
+});
+
+Route.get("/support", async () => {
+  const support = await SupportRequest.all();
+  return { hello: support };
 });
