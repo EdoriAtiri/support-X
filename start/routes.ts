@@ -33,7 +33,4 @@ Route.get("/", async () => {
   return user;
 });
 
-Route.get("/support", async () => {
-  const support = await SupportRequest.all();
-  return { hello: support };
-});
+Route.post("/user", "UsersController.index");

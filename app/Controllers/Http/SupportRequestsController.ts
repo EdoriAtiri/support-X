@@ -28,7 +28,7 @@ export default class SupportRequestsController {
         email: email,
         title: title,
         message: message,
-        user_id: user.id || userEmail?.id,
+        userId: user.id || userEmail?.id,
       })
       .save();
 
