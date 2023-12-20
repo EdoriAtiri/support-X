@@ -19,10 +19,16 @@
 */
 
 import Route from "@ioc:Adonis/Core/Route";
-import User from "App/Models/User";
+import SupportRequestsController from "App/Controllers/Http/SupportRequestsController";
 
 Route.post("/support", "SupportRequestsController.store");
 
 Route.get("/user", "UsersController.index");
 
 Route.post("/user", "UsersController.show");
+
+Route.post("/upload", "SupportRequestsController.handleFileUpload");
+
+// Route.post("/upload", async (ctx) => {
+//   return new SupportRequestsController().handleFileUpload(ctx);
+// });
