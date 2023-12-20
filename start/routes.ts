@@ -19,7 +19,6 @@
 */
 
 import Route from "@ioc:Adonis/Core/Route";
-import SupportRequest from "App/Models/SupportRequest";
 import User from "App/Models/User";
 
 Route.post("/support", "SupportRequestsController.store");
@@ -33,4 +32,4 @@ Route.get("/", async () => {
   return user;
 });
 
-Route.post("/user", "UsersController.index");
+Route.post("/user", "UsersController.show");
