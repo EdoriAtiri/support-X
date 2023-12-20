@@ -25,7 +25,11 @@ import User from "App/Models/User";
 Route.post("/support", "SupportRequestsController.store");
 
 Route.get("/", async () => {
-  const user = await User.all();
+  const user = await User.query().preload("support_requests");
+
+  user.forEach((user) => {
+    console.log(user.support_requests);
+  });
   return user;
 });
 
