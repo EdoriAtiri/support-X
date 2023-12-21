@@ -9,34 +9,27 @@ const testSupportRequest = {
   title: "test",
   message: "tests support request handling",
 };
+let testSupportRequestId;
 
 test.group("Support request store", () => {
-  test("support request was submitted and persists /support", async ({
-    client,
-  }) => {
+  test("support request was submitted", async ({ client }) => {
     const response = await client.post("/support").form(testSupportRequest);
 
     // console.log(response.body().id);
 
     // Assert that the submission was successful with status code of 200
     response.assertStatus(200);
+    testSupportRequestId = response.body().id;
 
     // Verify that the data in response is the data in supportRequest submitted
-    response.assertBodyContains({
-      first_name: testSupportRequest.first_name,
-      last_name: testSupportRequest.last_name,
-      email: testSupportRequest.email,
-      title: testSupportRequest.title,
-      message: testSupportRequest.message,
-    });
+    response.assertBodyContains(testSupportRequest);
+  });
 
-    const testRequest = await SupportRequest.findBy("id", response.body().id);
-    response.assertBodyContains({
-      id: testRequest!.id,
-      first_name: testRequest!.first_name,
-      last_name: testRequest!.last_name,
-      title: testRequest!.title,
-      message: testRequest!.message,
-    });
+  test("support request persists /support/request", async ({ client }) => {
+    const response = await client
+      .post("/support/request")
+      .form({ id: testSupportRequestId });
+
+    response.assertBodyContains(testSupportRequest);
   });
 });
