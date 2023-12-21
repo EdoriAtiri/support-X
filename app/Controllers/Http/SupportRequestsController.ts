@@ -1,16 +1,27 @@
 import Application from "@ioc:Adonis/Core/Application";
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
-import { schema } from "@ioc:Adonis/Core/Validator";
+import { schema, rules } from "@ioc:Adonis/Core/Validator";
 import SupportRequest from "App/Models/SupportRequest";
 import User from "App/Models/User";
 
 export default class SupportRequestsController {
   public async store({ request }: HttpContextContract) {
-    const first_name = request.input("first_name");
-    const last_name = request.input("last_name");
-    const email = request.input("email");
-    const title = request.input("title");
-    const message = request.input("message");
+    // Support request schema
+    const supportRequestSchema = schema.create({
+      first_name: schema.string(),
+      last_name: schema.string(),
+      title: schema.string(),
+      message: schema.string(),
+      email: schema.string({ trim: true }, [rules.email()]),
+    });
+
+    // Validate new support request data with schema
+    const supportRequestData = await request.validate({
+      schema: supportRequestSchema,
+    });
+
+    // Destructure support request data
+    const { first_name, last_name, title, message, email } = supportRequestData;
 
     // Handle file upload - Create file schema
     const fileDataSchema = schema.create({
