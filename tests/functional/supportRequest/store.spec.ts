@@ -20,16 +20,11 @@ test.group("Support request store", () => {
     response.assertStatus(200);
     mockSupportRequestId = response.body().id;
 
-    // // Assert file path in response
-    // response.assertBodyContains({
-    //   file: `tmp/${mockSupportRequestId}/test-image.jpg`,
-    // });
-
     // Verify that the data in response is the data in supportRequest submitted
     response.assertBodyContains(mockSupportRequest);
   });
 
-  test("support request persists /support/request", async ({ client }) => {
+  test("support request persists", async ({ client }) => {
     const response = await client
       .post("/support/request")
       .form({ id: mockSupportRequestId });
@@ -50,7 +45,7 @@ test.group("Support request store", () => {
     const dirPath = `/tmp/${response.body().user_id}`;
     const filePath = path.join(root, dirPath, test_file.name);
 
-    const isFileExist = await fs.existsSync(filePath);
-    assert.isTrue(await isFileExist);
+    const doesFileExist = await fs.existsSync(filePath);
+    assert.isTrue(await doesFileExist);
   });
 });

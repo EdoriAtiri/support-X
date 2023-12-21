@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-      <form action="{{ route('SupportRequestsController.store') }}" method="post">
+      <form action="{{ route('SupportRequestsController.store') }}" method="post" enctype="multipart/form-data" content-type='multipart/form-data'>
     <div>
       <label for="first_name">First Name</label>
       <input type="text" name="first_name"  />
@@ -45,6 +45,7 @@
             id="file"
             max="1"
             accept=".jpg,.png,.jpeg, .gif"
+            formenctype="multipart/form-data"
           />
     </div>
    
