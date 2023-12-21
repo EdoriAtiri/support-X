@@ -27,8 +27,11 @@ Route.get("/user", "UsersController.index");
 
 Route.post("/user", "UsersController.show");
 
-Route.post("/upload", "SupportRequestsController.handleFileUpload");
+Route.get("/", async ({ view }) => {
+  return view.render("home");
+});
 
+// Route.post("/upload", "SupportRequestsController.handleFileUpload");
 // Route.post("/upload", async (ctx) => {
 //   return new SupportRequestsController().handleFileUpload(ctx);
 // });
