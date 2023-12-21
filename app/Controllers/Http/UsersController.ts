@@ -19,4 +19,21 @@ export default class UsersController {
 
     return userEmail;
   }
+
+  public async newUser(email, fullName) {
+    // Get user via email
+    const existingUser = await User.findBy("email", email);
+
+    // If the existingUser does not belong to a user create a new user
+    if (!existingUser) {
+      // Instantiate new user
+      const user = new User();
+
+      await user.fill({ fullName: fullName, email: email }).save();
+
+      return user;
+    }
+
+    return existingUser;
+  }
 }

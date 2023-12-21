@@ -2,7 +2,7 @@ import Application from "@ioc:Adonis/Core/Application";
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import { schema, rules } from "@ioc:Adonis/Core/Validator";
 import SupportRequest from "App/Models/SupportRequest";
-import User from "App/Models/User";
+import UsersController from "./UsersController";
 
 export default class SupportRequestsController {
   public async store({ request }: HttpContextContract) {
@@ -36,23 +36,14 @@ export default class SupportRequestsController {
       schema: fileDataSchema,
     });
 
-    // Get user via email
-    const existingUser = await User.findBy("email", email);
-
-    // Instantiate new user
-    const user = new User();
-
-    // If the existingUser does not belong to a user create a new user
-    if (!existingUser) {
-      await user
-        .fill({ fullName: `${first_name} ${last_name}`, email: email })
-        .save();
-    }
+    // get/create user
+    const user = await new UsersController().newUser(
+      email,
+      `${first_name} ${last_name}`
+    );
 
     // Save file to tmp
-    await fileData.file.move(
-      Application.tmpPath(`${existingUser?.id || user.id}`)
-    );
+    await fileData.file.move(Application.tmpPath(`${user.id}`));
 
     // Instantiate new supportRequest
     const supportRequest = new SupportRequest();
@@ -65,9 +56,9 @@ export default class SupportRequestsController {
         email: email,
         title: title,
         message: message,
-        userId: existingUser?.id || user.id,
+        userId: user.id,
         /*todo replace with fileData.file.filePath */
-        file: `tmp/${existingUser?.id || user.id}/${fileData.file.fileName}`,
+        file: `tmp/${user.id}/${fileData.file.fileName}`,
       })
       .save();
 
