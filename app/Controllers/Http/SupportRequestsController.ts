@@ -27,9 +27,10 @@ export default class SupportRequestsController {
     const fileDataSchema = schema.create({
       file: schema.file.nullableAndOptional({
         size: "2mb",
-        extnames: ["jpg", "png", "gif"],
+        extnames: ["jpg", "jpeg", "png", "gif"],
       }),
     });
+    console.log(request.input("file"));
 
     // Validate file in request with fileDataSchema
     const fileData = await request.validate({
