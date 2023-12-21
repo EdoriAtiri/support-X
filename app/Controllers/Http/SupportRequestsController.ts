@@ -68,6 +68,13 @@ export default class SupportRequestsController {
     return supportRequest;
   }
 
+  public async show({ request }: HttpContextContract) {
+    const id = request.input("id");
+    const supportRequest = await SupportRequest.find(id);
+
+    return supportRequest;
+  }
+
   // public async handleFileUpload({ request, response }: HttpContextContract) {
   //   const fileDataSchema = schema.create({
   //     file: schema.file({
