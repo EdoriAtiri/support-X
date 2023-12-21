@@ -11,10 +11,8 @@ export default class SupportRequestsController {
     const email = request.input("email");
     const title = request.input("title");
     const message = request.input("message");
-    // const file = request.file('file')
 
-    // Handle file upload
-    // Create file schema
+    // Handle file upload - Create file schema
     const fileDataSchema = schema.create({
       file: schema.file({
         size: "2mb",
@@ -27,19 +25,28 @@ export default class SupportRequestsController {
       schema: fileDataSchema,
     });
 
-    // Save file to tmp
-    await fileData.file.move(Application.tmpPath("file-upload"));
+    // Get user via email
+    const existingUser = await User.findBy("email", email);
 
-    const userEmail = await User.findBy("email", email);
-
+    // Instantiate new user
     const user = new User();
-    if (!userEmail) {
+
+    // If the existingUser does not belong to a user create a new user
+    if (!existingUser) {
       await user
         .fill({ fullName: `${first_name} ${last_name}`, email: email })
         .save();
     }
 
+    // Save file to tmp
+    await fileData.file.move(
+      Application.tmpPath(`${existingUser?.id || user.id}`)
+    );
+
+    // Instantiate new supportRequest
     const supportRequest = new SupportRequest();
+
+    // Fill and save the supportRequest
     await supportRequest
       .fill({
         first_name: first_name,
@@ -47,30 +54,31 @@ export default class SupportRequestsController {
         email: email,
         title: title,
         message: message,
-        userId: user.id || userEmail?.id,
-        file: `tmp/file-upload/${fileData.file.clientName}`,
+        userId: existingUser?.id || user.id,
+        /*todo replace with fileData.file.filePath */
+        file: `tmp/${existingUser?.id || user.id}/${fileData.file.fileName}`,
       })
       .save();
 
     return supportRequest;
   }
 
-  //   public async handleFileUpload({ request, response }: HttpContextContract) {
-  //     const fileDataSchema = schema.create({
-  //       file: schema.file({
-  //         size: "2mb",
-  //         extnames: ["jpg", "png", "gif"],
-  //       }),
-  //     });
+  // public async handleFileUpload({ request, response }: HttpContextContract) {
+  //   const fileDataSchema = schema.create({
+  //     file: schema.file({
+  //       size: "2mb",
+  //       extnames: ["jpg", "png", "gif"],
+  //     }),
+  //   });
 
-  //     const fileData = await request.validate({
-  //       schema: fileDataSchema,
-  //     });
-  //     console.log(fileData.file.clientName);
+  //   const fileData = await request.validate({
+  //     schema: fileDataSchema,
+  //   });
 
-  //     await fileData.file.move(Application.tmpPath("file-upload"));
+  //   await fileData.file.move(Application.tmpPath("file-upload"));
+  //   console.log(fileData.file.fileName);
 
-  //     /* const file = request.file("file", {
+  //   /* const file = request.file("file", {
   //         extnames: ["jpg", "gif"],
   //       });
 
@@ -80,8 +88,8 @@ export default class SupportRequestsController {
   //     await file.move(Application.tmpPath("file-upload"));
   //     */
 
-  //     return response.created({
-  //       message: "File uploaded",
-  //     });
-  //   }
+  //   return response.created({
+  //     message: "File uploaded",
+  //   });
+  // }
 }
