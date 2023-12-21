@@ -1,6 +1,7 @@
 import { test } from "@japa/runner";
-import Drive from "@ioc:Adonis/Core/Drive";
 import { file } from "@ioc:Adonis/Core/Helpers";
+import fs from "fs";
+import path from "path";
 
 const mockSupportRequest = {
   first_name: "Saul",
@@ -37,31 +38,19 @@ test.group("Support request store", () => {
   });
 
   test("a user can upload a file", async ({ client, assert }) => {
-    const fakeDrive = Drive.fake();
-
-    // Creating a fake file to upload
+    // Create a fake file to upload
     const test_file = await file.generatePng("1mb");
-
-    console.log("File Contents:", test_file.contents); // Log the file contents
 
     const response = await client
       .post(`/support`)
       .fields(mockSupportRequest)
       .file("file", test_file.contents, { filename: test_file.name });
 
-    // Log the response for debugging
-    console.log("Upload Response:", response.text());
-    console.log("file name:", test_file.name);
+    const root = path.resolve(__dirname, "../../../");
+    const dirPath = `/tmp/${response.body().user_id}`;
+    const filePath = path.join(root, dirPath, test_file.name);
 
-    const filePath = `tmp/${response.body().user_id}/${test_file.name}`;
-
-    // Assert that file in response body for the upload matches the expected file path
-    assert.isTrue(filePath === response.body().file);
-
-    // // Assert the file was uploaded successfully
-    // assert.isTrue(await fakeDrive.exists(test_file.name));
-
-    // Restore the Drive fake
-    Drive.restore();
+    const isFileExist = await fs.existsSync(filePath);
+    assert.isTrue(await isFileExist);
   });
 });
