@@ -25,7 +25,7 @@ export default class SupportRequestsController {
 
     // Handle file upload - Create file schema
     const fileDataSchema = schema.create({
-      file: schema.file({
+      file: schema.file.nullableAndOptional({
         size: "2mb",
         extnames: ["jpg", "png", "gif"],
       }),
@@ -43,7 +43,9 @@ export default class SupportRequestsController {
     );
 
     // Save file to tmp
-    await fileData.file.move(Application.tmpPath(`${user.id}`));
+    if (fileData.file) {
+      await fileData.file.move(Application.tmpPath(`${user.id}`));
+    }
 
     // Instantiate new supportRequest
     const supportRequest = new SupportRequest();
@@ -58,7 +60,7 @@ export default class SupportRequestsController {
         message: message,
         userId: user.id,
         /*todo replace with fileData.file.filePath */
-        file: `tmp/${user.id}/${fileData.file.fileName}`,
+        file: fileData.file ? `tmp/${user.id}/${fileData.file.fileName}` : "",
       })
       .save();
 
