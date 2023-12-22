@@ -30,7 +30,6 @@ export default class SupportRequestsController {
         extnames: ["jpg", "jpeg", "png", "gif"],
       }),
     });
-    console.log(request.input("file"));
 
     // Validate file in request with fileDataSchema
     const fileData = await request.validate({
