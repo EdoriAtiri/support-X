@@ -5,39 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style>
+      body > * {
+        padding:0;
+        margin: 0;
+        box-sizing: border-box;
+
+      }
+      body {
+        width: 100%;
+        height: 100vh;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+align-items: center;     
+ }
+
+      form{
+        width: 70%;
+        padding-top:1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+        gap: .7rem;
+      }
+
+      .input-container {
+        display: flex;
+        width: 50%;
+        flex-direction: column;
+        align-self: flex-start;
+        gap: .2rem;
+      }
+
+      input, textarea {
+        width: 100%;
+      }
+
+      input {
+      height: 1.5rem;
+      }
+
+      label {
+        font-size: 1rem;
+        font-weight: bold;
+      }
+     
+    </style>
 </head>
 <body>
+  <h1>Support Request</h1>
       <form action="{{ route('SupportRequestsController.store') }}" method="post" enctype="multipart/form-data" content-type='multipart/form-data'>
-    <div>
+    <div class="input-container">
       <label for="first_name">First Name</label>
       <input type="text" name="first_name"  />
-      {{--  <p>{{ flashMessages.get('errors.email') || '' }}</p>  --}}
     </div>
-    <div>
+    <div class="input-container">
       <label for="last_name">Last Name</label>
       <input type="text" name="last_name"  />
-      {{--  <p>{{ flashMessages.get('errors.email') || '' }}</p>  --}}
     </div>
-    <div>
+    <div class="input-container">
       <label for="email">Email</label>
       <input type="email" name="email"  />
-      {{--  <p>{{ flashMessages.get('errors.email') || '' }}</p>  --}}
     </div>
-    <div>
+    <div class="input-container">
       <label for="title">Title</label>
       <input type="text" name="title"  />
-      {{--  <p>{{ flashMessages.get('errors.email') || '' }}</p>  --}}
     </div>
-    <div>
+    <div class="input-container">
       <label for="first_name">Message</label>
       <textarea name="message" id="" cols="30" rows="10"></textarea>
-      {{--  <p>{{ flashMessages.get('errors.email') || '' }}</p>  --}}
     </div>
-    <div>
-      <label for="file">Image</label>
-          <p>
-           file
-          </p>
+    <div class="input-container">
+      <label for="file">Select an Image</label>          
           <input
           id="file"
             type="file"
