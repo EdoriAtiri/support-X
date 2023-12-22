@@ -179,6 +179,10 @@ To test the endpoints and file uploads:
 
 - Run `npm run test` or `node ace test` on the the terminal in the projects root directory.
 
+## Links
+
+[Database Diagram](https://dbdiagram.io/d/6585555689dea62799678eca)
+
 ## Contributors
 
 - Edori Atiri contributed to this project,
