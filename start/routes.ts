@@ -3,7 +3,7 @@ import Route from "@ioc:Adonis/Core/Route";
 Route.post("/support", "SupportRequestsController.store");
 Route.post("/support/request", "SupportRequestsController.show");
 
-Route.get("/user", "UsersController.index");
+Route.get("/users", "UsersController.index");
 
 Route.post("/user", "UsersController.show");
 
